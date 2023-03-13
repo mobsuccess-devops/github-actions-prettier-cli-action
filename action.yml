@@ -34,12 +34,17 @@ runs:
     - name: Installing Prettier
       id: prettier-install
       shell: bash
-      run: npm install --global prettier@${{ inputs.prettier_version }}
+      run: |
+        npm install --global prettier@${{ inputs.prettier_version }}
+        echo "prettier version: $(prettier --version)"
 
     - name: Running Prettier
       id: prettier-run
       shell: bash
-      run: echo "prettier-output=$(prettier --list-different --config ${{ inputs.config_path }} --ignore-path ${{ inputs.ignore_path }} --no-error-on-unmatched-pattern ${{ inputs.file_pattern }})" >> $GITHUB_OUTPUT
+      run: |
+        echo "debug"
+        prettier --list-different --config ${{ inputs.config_path }} --ignore-path ${{ inputs.ignore_path }} --no-error-on-unmatched-pattern ${{ inputs.file_pattern }}
+        echo "prettier-output=$(prettier --list-different --config ${{ inputs.config_path }} --ignore-path ${{ inputs.ignore_path }} --no-error-on-unmatched-pattern ${{ inputs.file_pattern }})" >> $GITHUB_OUTPUT
 
     - name: Fail On Error
       id: fail-on-error
